@@ -1,0 +1,31 @@
+version: '2'
+services:
+  jeebbs:
+    depends_on:
+      - db
+    image: wzt3309/jeebbs
+    ports:
+      - 8081:8080
+    environment:
+      JEEBBS_DB_HOST: db:3306
+      JEEBBS_DB_USER: jeebbs
+      JEEBBS_DB_PASSWORD: jeebbs
+    restart: always
+    volumes:
+      - /var/log/jeebbs:/var/log/jeebbs
+      # For using externalization configuration
+      #- /tmp/app/config:/app/config
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somejeebbs
+      MYSQL_DATABASE: jeebbs
+      MYSQL_USER: jeebbs
+      MYSQL_PASSWORD: jeebbs
+
+volumes:
+  db_data:
