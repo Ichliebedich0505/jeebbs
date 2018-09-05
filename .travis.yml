@@ -19,7 +19,7 @@ script: mvn clean verify -B
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 - '[[ $TRAVIS_BRANCH == "master" ]] && mvn --settings .travis-settings.xml -DskipTests
-  -B deploy'
+  -B deploy -P stage'
 deploy:
   provider: releases
   api_key:
