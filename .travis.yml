@@ -1,0 +1,29 @@
+sudo: required
+
+services:
+  - docker
+
+language: java
+
+jdk:
+  - oraclejdk8
+
+env:
+  global:
+    - DOCKERHUB_USERNAME=wzt3309
+
+branches:
+  only:
+  - master
+
+before_install:
+  - docker version
+  - docker info
+
+script: mvn clean verify -B
+
+after_success:
+  # test coverage reporting
+  - bash <(curl -s https://codecov.io/bash)
+  # deploy snapshots to Maven central, but only from master branch
+  -  "[[ $TRAVIS_BRANCH == \"master\" ]] && mvn --settings .travis-settings.xml -DskipTests -B deploy"

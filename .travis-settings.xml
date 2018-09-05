@@ -5,7 +5,7 @@
     <servers>
         <server>
             <id>docker-hub</id>
-            <username>wzt3309</username>
+            <username>${env.DOCKERHUB_USERNAME}</username>
             <password>${env.DOCKERHUB_PASSWORD}</password>
         </server>
     </servers>
