@@ -1,29 +1,29 @@
 sudo: required
-
 services:
-  - docker
-
+- docker
 language: java
-
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 env:
   global:
-    - DOCKERHUB_USERNAME=wzt3309
-
+  - DOCKERHUB_USERNAME=wzt3309
+  - secure: l4gSghrJnH2/GJxJxKoG5TQx1nZcPkZfbxDc6+ZCfu1kqVidHlWgCOGV8bz+dcH4Cc47Qyg7jnpGfKlVxgp4v9n3+kXuzm1tW9dt8WOdC5ja2wB6KOgMdpON5if3Y5KKFrO2HAo8E+T71btQCF5NNBTe7kWxCgj3NVtzgy59QHPPiSJbcV4L9mC9t1m7PeBrHzSNZPpYe7vcWuy+MkM34xGmA7nF7luFj2q4Md7cHVJ/D1GiFjKmYYbsea519PAXCb5i/kKx3mUGgmCDjaSASRUdzPBKLbZ7LcOXypft+yRCF3TScbVh5NOXeTnWW0pbuFI1ltO62MMLSwlumWDj0C7Ipo2aAeXpskLAEIDmiyCi4/zHuoZMgkF7o8on/VkZ3yA13d7P8FtpVd/9iKmDKy8wHY9Ge24Jxr8cL7RyEDGqYOlB08gBcapXD7IW5KSUO1Jvca/js8LccA8Al7rqv1osdTwtQZz8v3sPTHhxnKcvUwV8+dhCVfJWsan/QnrvJBJT37U7jP0fgTmPoabaAsEKUT3RLpaKqfb8dxYv8F0XILjuNEUDYA21RNUb8tjYtVrogwYQF/9RI/OvMLZCLdDWDnuZru3qI6U9RyL8Q8AnRU77i85Xy5wpMef/I8CGQWl99i3UgZTQRlGolABpGWKmuUjG/ErBHaUDXq8kreM=
 branches:
   only:
   - master
-
 before_install:
-  - docker version
-  - docker info
-
+- docker version
+- docker info
 script: mvn clean verify -B
-
 after_success:
-  # test coverage reporting
-  - bash <(curl -s https://codecov.io/bash)
-  # deploy snapshots to Maven central, but only from master branch
-  -  "[[ $TRAVIS_BRANCH == \"master\" ]] && mvn --settings .travis-settings.xml -DskipTests -B deploy"
+- bash <(curl -s https://codecov.io/bash)
+- '[[ $TRAVIS_BRANCH == "master" ]] && mvn --settings .travis-settings.xml -DskipTests
+  -B deploy'
+deploy:
+  provider: releases
+  api_key:
+    secure: kqDMbSRvn8Z2Mqt7ND0P8Bj88khjJnF0PKggykvW3b6LtHoAXGihLe/06RGfjsyb9P+RM8B43APuu4DCmO/kN9yI5dNIUrfUJauWQrhfHa0NOAAd337Iqi0HOBV6DT3tdcfVnDCDzarChGVOTVLBmmt1x2KPh9ONtH7Uh8X8/2YPh8Ugwfv6MKvzHxyrj26/VAizfW9/k5CRims6yO8VYlej/xmGfp17uWoGD9+XjR0oOcPwMFdyYM85HFVXnCiUs4gk9BY/ookigUT4Zw+aWWakAx2SBxJoIeGQokPR5pQmRQAXO2JrWX2dFKCbe4TttVuco+e9kRsXR1UIn46T4BLs6OhzUdW461C9+yJgqaz8uN9gYzmC5RQcgWUX977eZ/r02lHVX4MQL0zZp+bHQdOrsdwZeYTQiHzXV1JmPh4Rr2S4DczLy6htVx20IFuw5hwzbDrFPIm7HR/rcyjze9wL9Y3GINgNITyT91XJZJb47NXDuZc8ITKbnlYFsvDDC3lO49UXi910O+ADClZiVQyekVQzcuiOuw5NM+d09MgNJl7xONYJskSQpWoz0A2/pD7JKMKOcy8edSv2A/k3R484fpulYLG21p6JCVajoo0QXznw3pp4TsuGqTElduVC2w96VCNmUGcB9RpZggRc/7ZeK7GW69PKzgFLDOdPZvY=
+  file: target/jeebbs*.jar
+  skip_cleanup: true
+  on:
+    tags: true
