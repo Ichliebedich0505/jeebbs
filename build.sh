@@ -16,4 +16,4 @@ export DOCKERHUB_USERNAME
 read -s -p "Please input password for $DOCKERHUB_USERNAME: " DOCKERHUB_PASSWORD
 export DOCKERHUB_PASSWORD=$(./mvnw --encrypt-password $DOCKERHUB_PASSWORD | tail -n +2)
 
-./mvnw clean deploy -Dmaven.test.skip=true -s ./.travis-settings.xml -P stage
+./mvnw clean install -Dmaven.test.skip=true -s ./.travis-settings.xml -P stage
