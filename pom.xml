@@ -30,6 +30,7 @@
         <docker.registry.username>wzt3309</docker.registry.username>
         <swagger2.version>2.7.0</swagger2.version>
         <manifests.version>1.1</manifests.version>
+        <webmagic.version>0.7.3</webmagic.version>
         <plugin.buildnumber.version>1.4</plugin.buildnumber.version>
 	</properties>
 
@@ -105,6 +106,17 @@
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-manifests</artifactId>
             <version>${manifests.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-core</artifactId>
+            <version>${webmagic.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-extension</artifactId>
+            <version>${webmagic.version}</version>
         </dependency>
 	</dependencies>
 
