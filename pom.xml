@@ -11,6 +11,10 @@
 	<name>jeebbs</name>
 	<description></description>
 
+    <scm>
+        <connection>scm:git:git@github.com:Animuz3309/jeebbs.git</connection>
+    </scm>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -24,6 +28,10 @@
 		<java.version>1.8</java.version>
         <docker.registry>registry.hub.docker.com</docker.registry>
         <docker.registry.username>wzt3309</docker.registry.username>
+        <swagger2.version>2.7.0</swagger2.version>
+        <manifests.version>1.1</manifests.version>
+        <webmagic.version>0.7.3</webmagic.version>
+        <plugin.buildnumber.version>1.4</plugin.buildnumber.version>
 	</properties>
 
 	<dependencies>
@@ -82,7 +90,77 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-manifests</artifactId>
+            <version>${manifests.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-core</artifactId>
+            <version>${webmagic.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>us.codecraft</groupId>
+            <artifactId>webmagic-extension</artifactId>
+            <version>${webmagic.version}</version>
+        </dependency>
 	</dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>${plugin.buildnumber.version}</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                    <shortRevisionLength>7</shortRevisionLength>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <jeebbs-info-buildRevision>${buildNumber}</jeebbs-info-buildRevision>
+                            <jeebbs-info-name>${project.artifactId}</jeebbs-info-name>
+                            <jeebbs-info-version>${project.version}</jeebbs-info-version>
+                            <jeebbs-info-date>${maven.build.timestamp}</jeebbs-info-date>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 	<profiles>
         <profile>
