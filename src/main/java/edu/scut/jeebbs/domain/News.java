@@ -1,7 +1,7 @@
 package edu.scut.jeebbs.domain;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,16 +9,23 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Data
 public class News {
     @Id
     @GeneratedValue
     private Long id;
-    private final String source;
-    private final String title;
-    private final String href;
-    private final String abstracts;
-    private final Date date;
+    private String source;
+    private String title;
+    private String href;
+    private String abstracts;
+    private Date date;
 
+    public News(String source, String title, String href, String abstracts, Date date) {
+        this.source = source;
+        this.title = title;
+        this.href = href;
+        this.abstracts = abstracts;
+        this.date = date;
+    }
 }
