@@ -24,3 +24,8 @@ logging:
   file:
     max-history: ${JEEBBS_LOG_MAX_HISTORY:10}
     max-size: ${JEEBBS_LOG_MAX_SIZE:10MB}
+
+jeebbs:
+  quartz:
+    news:
+      cron: "0 0/10 6-23 * * ?"

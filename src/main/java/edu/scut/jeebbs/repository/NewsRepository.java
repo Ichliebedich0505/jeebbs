@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NewsRepository extends PagingAndSortingRepository<News, Long> {
+    boolean existsByHrefOrTitleLike(String href, String title);
 }

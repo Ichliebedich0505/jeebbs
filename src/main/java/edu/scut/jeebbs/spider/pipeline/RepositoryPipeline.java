@@ -14,13 +14,11 @@ import java.util.Map;
  * use spring data jpa to save data fetch from spider
  * @param <T> class of bean to store into db
  */
-public class RepositoryPipeline<T> implements Pipeline {
-    private CrudRepository repository;
+public abstract class RepositoryPipeline<T> implements Pipeline {
     private Class<T> clazz;
 
-    public RepositoryPipeline(Class<T> clazz, CrudRepository repository) {
+    public RepositoryPipeline(Class<T> clazz) {
         this.clazz = clazz;
-        this.repository = repository;
     }
 
     /**
@@ -36,11 +34,13 @@ public class RepositoryPipeline<T> implements Pipeline {
         BeanMap beanMap = BeanMap.create(bean);
         Map<String, Object> map = resultItems.getAll();
         beanMap.putAll(map);
-        repository.save(bean);
+        save(bean);
     }
 
     // use reflect to create an instance of class T
     private T instance() {
         return ReflectionUtils.createInstanceIfPresent(clazz.getName(), null);
     }
+
+    protected abstract void save(T bean);
 }

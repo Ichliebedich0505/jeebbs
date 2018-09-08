@@ -45,4 +45,9 @@ public class SpiderProperties {
      * Warning: Set cookie will still NOT work if disableCookieManagement is true.
      */
     private boolean disableCookieManagement = false;
+
+    /**
+     * start with more than one threads
+     */
+    private int thread = 5;
 }
