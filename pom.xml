@@ -31,6 +31,7 @@
         <swagger2.version>2.7.0</swagger2.version>
         <manifests.version>1.1</manifests.version>
         <webmagic.version>0.7.3</webmagic.version>
+        <netty.version>4.1.27.Final</netty.version>
         <plugin.buildnumber.version>1.4</plugin.buildnumber.version>
 	</properties>
 
@@ -55,6 +56,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
@@ -117,6 +122,12 @@
             <groupId>us.codecraft</groupId>
             <artifactId>webmagic-extension</artifactId>
             <version>${webmagic.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
         </dependency>
 	</dependencies>
 
