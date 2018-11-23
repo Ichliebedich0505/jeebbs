@@ -9,3 +9,4 @@
 docker-compose up
 
 ### jar
+test
