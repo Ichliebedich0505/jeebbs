@@ -14,7 +14,7 @@ public class QuartzManager {
     }
 
     /**
-     * Add a new corn job to quartz scheduler
+     * Add a new cron job to quartz scheduler
      * @param jobName the name of job
      * @param jobGroupName the group name of job
      * @param triggerName the name of trigger

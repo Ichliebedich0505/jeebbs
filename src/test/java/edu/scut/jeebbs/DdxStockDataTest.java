@@ -88,7 +88,7 @@ public class DdxStockDataTest {
                 .scheme("http").host("ddx.gubit.cn").path("/xg/ddxlist.php")
                 .queryParam("t", Math.random())
                 .queryParam("getlsdate", 1)
-//                .queryParam("lsdate", "2018-09-14")
+//              .queryParam("lsdate", "2018-09-14")
                 .build();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Referer", "http://ddx.gubit.cn/xg/ddx.html");
