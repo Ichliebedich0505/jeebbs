@@ -35,8 +35,8 @@ public class NewsSohuJob implements Job {
         Spider.create(new SohuNewsPageProcessor(spiderProperties))
                 .addUrl(URL)
                 .addPipeline(new NewsRepositoryPipeline(repository, validator))
-                .thread(spiderProperties.getThread())
-                .run();
+                .thread(spiderProperties.getThread());
+                //.run();
         log.info("finished 'news_sohu_job'");
 
     }

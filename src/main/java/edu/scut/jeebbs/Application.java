@@ -1,5 +1,6 @@
 package edu.scut.jeebbs;
 
+import edu.scut.jeebbs.display.LatestDDXDisplay;
 import edu.scut.jeebbs.domain.Customer;
 import edu.scut.jeebbs.repository.CustomerRepository;
 import org.slf4j.Logger;
@@ -14,6 +15,8 @@ public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
+		//LatestDDXDisplay ll = new LatestDDXDisplay();
+
 	}
 
 }

@@ -1,8 +1,4 @@
-package edu.scut.jeebbs;
-
-
-
-
+package edu.scut.jeebbs.display;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonParser;
@@ -14,17 +10,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,10 +24,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 @Slf4j
-public class CrawledDataOutputTest {
+public class LatestDDXDisplay {
 
     @Data
     static class DdxResponse{
@@ -62,7 +49,7 @@ public class CrawledDataOutputTest {
 
     }
 
-    static class StockDeserializer extends JsonDeserializer<Stock>{
+    static class StockDeserializer extends JsonDeserializer<Stock> {
 
         @Override
         public Stock deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
@@ -76,11 +63,14 @@ public class CrawledDataOutputTest {
         }
     }
 
-    //@Autowired
     private RestTemplate client;
 
-    @Before
-    public void setClient(){
+    public LatestDDXDisplay(){
+        this.setClient();
+    }
+
+
+    private void setClient(){
 
         RestTemplateBuilder builder = new RestTemplateBuilder();
         client = builder.build();
@@ -104,8 +94,7 @@ public class CrawledDataOutputTest {
 
     }
 
-    @Test
-    public void test(){
+    private List<Stock> getStockIdNPrice(){
         UriComponents uriComponents = UriComponentsBuilder.newInstance().scheme("http")
                 .host("ddx.gubit.cn").path("/xg/ddxlist.php")
                 .queryParam("t", Math.random())
@@ -124,10 +113,12 @@ public class CrawledDataOutputTest {
 
         List<Stock> stockList = new ArrayList<>(response.getData());
 
-        for(Stock s : stockList){
-            log.info("股票编号是：" + s.id);
-            log.info("股票指数是："+ s.cur);
-        }
+        return stockList;
+    }
+
+    public void Display(){
+
+
     }
 
 
