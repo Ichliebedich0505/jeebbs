@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import edu.scut.jeebbs.domain.DDXResponse;
+import edu.scut.jeebbs.domain.Stock;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -27,41 +29,9 @@ import java.util.List;
 @Slf4j
 public class LatestDDXDisplay {
 
-    @Data
-    static class DdxResponse{
-        int page;
-        int total;
 
-        @JsonFormat(pattern = "yyyy-MM-dd")
-        Date curDate;
 
-        List<Stock> data;
 
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        Date updataDate;
-    }
-
-    @JsonDeserialize(using = StockDeserializer.class)
-    @Data
-    static class Stock{
-        Integer id;
-        Float cur;
-
-    }
-
-    static class StockDeserializer extends JsonDeserializer<Stock> {
-
-        @Override
-        public Stock deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-
-            Stock stock = new Stock();
-
-            JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-            stock.setCur(node.get(1).floatValue());
-            stock.setId(node.get(0).intValue());
-            return stock;
-        }
-    }
 
     private RestTemplate client;
 
@@ -94,7 +64,7 @@ public class LatestDDXDisplay {
 
     }
 
-    private List<Stock> getStockIdNPrice(){
+    public List<Stock> getStockIdNPrice(){
         UriComponents uriComponents = UriComponentsBuilder.newInstance().scheme("http")
                 .host("ddx.gubit.cn").path("/xg/ddxlist.php")
                 .queryParam("t", Math.random())
@@ -107,9 +77,9 @@ public class LatestDDXDisplay {
 
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<DdxResponse> responseEntity = client.exchange(uriComponents.encode().toUri(), HttpMethod.GET, httpEntity, DdxResponse.class);
+        ResponseEntity<DDXResponse> responseEntity = client.exchange(uriComponents.encode().toUri(), HttpMethod.GET, httpEntity, DDXResponse.class);
 
-        DdxResponse response = responseEntity.getBody();
+        DDXResponse response = responseEntity.getBody();
 
         List<Stock> stockList = new ArrayList<>(response.getData());
 

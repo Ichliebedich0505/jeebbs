@@ -1,37 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<p id="demo1"></p>
+<p id="demo2"></p>
+<p id="demo3"></p>
 
 <canvas id="myChart"></canvas>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
-
-            // The data for our dataset
-            data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
-                datasets: [{
-                    label: "My First dataset",
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45],
-                }]
-            },
-
-            // Configuration options go here
-            options: {}
-        });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"> </script>
+<script th:inline="javascript">
 
 
+    document.getElementById("demo1").innerHTML = "Test data transferring.";
 
-    </script>
+    function getId(value, index, array){
+        return value["id"];
+    }
+
+    function getPrice(value, index, array) {
+        return value["cur"];
+    }
+
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var stocklist = [[${stocklist}]];//document.getElementById("stocklist");
+
+    if(Array.isArray(stocklist)){
+        document.getElementById("demo2").innerHTML = "stocklist is an array";
+    }
+
+    //the functions do not seem to work
+    var stockids = stocklist.map(getId);
+    var prices =stocklist.map(getPrice);
+
+
+
+    document.getElementById("demo3").innerHTML = stockids;
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: stockids, //["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [{
+                label: "Today",
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: prices,
+            }]
+        },
+
+        // Configuration options go here
+        options: {}
+    });
+
+
+</script>
+
+
+
+
+
 
 
 </body>
