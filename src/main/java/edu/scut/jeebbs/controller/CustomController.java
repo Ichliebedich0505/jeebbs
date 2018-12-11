@@ -1,6 +1,8 @@
 package edu.scut.jeebbs.controller;
 
+import edu.scut.jeebbs.display.DailyStockDisplay;
 import edu.scut.jeebbs.display.LatestDDXDisplay;
+import edu.scut.jeebbs.domain.DailyDDXResponse;
 import edu.scut.jeebbs.domain.Stock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +34,7 @@ public class CustomController {
     }
 
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/latest", method = RequestMethod.GET)
     public String index(ModelMap map){
 
         LatestDDXDisplay ldd = new LatestDDXDisplay();
@@ -44,6 +47,16 @@ public class CustomController {
         return "index";
     }
 
+    @RequestMapping(value = "/singlehistorydaily", method = RequestMethod.GET)
+    public String SingleHistoryDaily(ModelMap map) throws ParseException, IOException {
+        DailyStockDisplay dd = new DailyStockDisplay();
+
+        List<Stock> stocklist = new ArrayList<>(dd.getStockIdNPrice());
+
+        map.put("stocklist", stocklist);
+        return "singlehistorydaily";
+
+    }
 
 
 }

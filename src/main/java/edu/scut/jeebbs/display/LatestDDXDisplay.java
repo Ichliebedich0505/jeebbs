@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import edu.scut.jeebbs.domain.DDXResponse;
 import edu.scut.jeebbs.domain.Stock;
+import edu.scut.jeebbs.utils.Helper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -29,10 +30,6 @@ import java.util.List;
 @Slf4j
 public class LatestDDXDisplay {
 
-
-
-
-
     private RestTemplate client;
 
     public LatestDDXDisplay(){
@@ -42,26 +39,7 @@ public class LatestDDXDisplay {
 
     private void setClient(){
 
-        RestTemplateBuilder builder = new RestTemplateBuilder();
-        client = builder.build();
-
-        List<HttpMessageConverter<?>> converterList = client.getMessageConverters();
-
-        HttpMessageConverter<?> converter;
-        List<MediaType> mediaTypeList;
-        for(int i = 0; i < converterList.size(); i++){
-            converter = converterList.get(i);
-            if (converter instanceof MappingJackson2HttpMessageConverter) {
-
-                mediaTypeList = new ArrayList<>(converter.getSupportedMediaTypes());
-                mediaTypeList.add(MediaType.TEXT_HTML);
-                ((MappingJackson2HttpMessageConverter)converter).getObjectMapper().
-                        configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                ((MappingJackson2HttpMessageConverter)converter).setSupportedMediaTypes(mediaTypeList);
-            }
-        }
-
-
+        client = Helper.setClient();
     }
 
     public List<Stock> getStockIdNPrice(){
@@ -71,24 +49,15 @@ public class LatestDDXDisplay {
                 .queryParam("getlsdate", 1)
                 .build();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Referer", "http://ddx.gubit.cn/xg/ddx.html");
-        headers.setAccept(Collections.singletonList(MediaType.ALL));
-
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-
-        ResponseEntity<DDXResponse> responseEntity = client.exchange(uriComponents.encode().toUri(), HttpMethod.GET, httpEntity, DDXResponse.class);
+        ResponseEntity<DDXResponse> responseEntity = Helper.getResponseEntity(this.client,
+                uriComponents.encode().toUri(),"http://ddx.gubit.cn/xg/ddx.html",
+                DDXResponse.class, String.class, MediaType.ALL);
 
         DDXResponse response = responseEntity.getBody();
 
         List<Stock> stockList = new ArrayList<>(response.getData());
 
         return stockList;
-    }
-
-    public void Display(){
-
-
     }
 
 

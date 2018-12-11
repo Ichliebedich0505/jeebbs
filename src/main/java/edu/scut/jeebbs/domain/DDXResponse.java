@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
+//the response body of latest data is json. therefore, it needs to be organized properly, as shown below.
 @Data
 public class DDXResponse{
     int page;
