@@ -4,6 +4,7 @@ import edu.scut.jeebbs.display.DailyStockDisplay;
 import edu.scut.jeebbs.display.LatestDDXDisplay;
 import edu.scut.jeebbs.domain.DailyDDXResponse;
 import edu.scut.jeebbs.domain.Stock;
+import edu.scut.jeebbs.utils.Helper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -50,10 +51,13 @@ public class CustomController {
     @RequestMapping(value = "/singlehistorydaily", method = RequestMethod.GET)
     public String SingleHistoryDaily(ModelMap map) throws ParseException, IOException {
         DailyStockDisplay dd = new DailyStockDisplay();
+        Stock stock = Helper.StockCodes2NamesByFile().get(0);
+        dd.setStockCode(String.format("%06d", stock.getId()));
 
         List<Stock> stocklist = new ArrayList<>(dd.getStockIdNPrice());
 
         map.put("stocklist", stocklist);
+        map.put("stockname", stock.getName());
         return "singlehistorydaily";
 
     }

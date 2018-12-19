@@ -12,6 +12,7 @@
 
     var stocklist = [[${stocklist}]];
 
+    var stockname = [[${stockname}]]
     var stockDate = stocklist.map(getDate);
     var stockPrice = stocklist.map(getPrice);
 
@@ -23,6 +24,11 @@
         return value.cur;
     }
 
+    function onHover() {
+        print('if you love me, say you love me. then you are mine');
+    }
+
+
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -30,36 +36,35 @@
 
             labels: stockDate,
             datasets: [{
-                label: '你所选取的股票的近两个月指数变化图',
+                label: stockname + '近两个月指数',
                 data: stockPrice,
-                backgroundColor:[
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor:[
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
                 borderWidth: 1
 
             }]
 
         },
         options: {
+            title: {
+                display: true,
+                text: '各股指近两个月指数变化图'
+            },
             scales:{
                 yAxes:[{
                     ticks:{
                         beginAtZero: true
                     }
                 }]
+            },
+            responsive: true,
+            tooltips:{
+                mode: 'nearest',
+                intersect: true
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
             }
         }
     });

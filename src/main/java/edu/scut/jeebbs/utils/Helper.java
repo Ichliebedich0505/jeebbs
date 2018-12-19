@@ -19,6 +19,7 @@ import java.util.List;
 
 public class Helper {
 
+    //use this list to map stock codes to stock names.
     private static List<Stock> stockCodesToNames = new ArrayList<>();
     private static String ProjectPath = "";
     private static String ResourceRelativePath = "src/main/resources";
@@ -30,6 +31,15 @@ public class Helper {
         ResourceAbsPath = ProjectPath + ResourceRelativePath;
     }
 
+
+    public static String GetStockCodesFilePath() throws FileNotFoundException {
+        if(ProjectPath == null || ProjectPath == ""){
+            init();
+        }
+
+
+        return ResourceAbsPath + StockCodesFileName;
+    }
 
     public static List<Stock> StockCodes2NamesByFile() throws IOException {
 

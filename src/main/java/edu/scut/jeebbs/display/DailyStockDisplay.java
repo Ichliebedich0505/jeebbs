@@ -3,6 +3,7 @@ package edu.scut.jeebbs.display;
 import edu.scut.jeebbs.domain.DDXResponse;
 import edu.scut.jeebbs.domain.Stock;
 import edu.scut.jeebbs.utils.Helper;
+import lombok.Data;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class DailyStockDisplay {
 
     private RestTemplate client;
@@ -60,6 +62,9 @@ public class DailyStockDisplay {
         System.out.println("the stream is like: " + stockList);
         return stockList;
     }
+
+
+
 
     //old<=> means the start of history data.
     private List<Stock> ParseStockHistoryFromStream(String stream) throws ParseException {
