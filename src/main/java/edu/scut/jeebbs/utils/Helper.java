@@ -41,6 +41,7 @@ public class Helper {
         return ResourceAbsPath + StockCodesFileName;
     }
 
+    // each element is the Stock type.
     public static List<Stock> StockCodes2NamesByFile() throws IOException {
 
         if(ProjectPath == null || ProjectPath == ""){

@@ -16,16 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Slf4j
 @Controller
-@RequestMapping(value = "/")
 public class CustomController {
+
+
+    @RequestMapping(value = "/test", method = GET)
+    public String jsptest(ModelMap map) {
+//
+        return "test";
+    }
+
 
     @RequestMapping(value = "/custom", method = GET)
     public String custom() {
@@ -50,14 +55,33 @@ public class CustomController {
 
     @RequestMapping(value = "/singlehistorydaily", method = RequestMethod.GET)
     public String SingleHistoryDaily(ModelMap map) throws ParseException, IOException {
-        DailyStockDisplay dd = new DailyStockDisplay();
-        Stock stock = Helper.StockCodes2NamesByFile().get(0);
-        dd.setStockCode(String.format("%06d", stock.getId()));
+        Map<String, List<Stock>> name2historyprices = new HashMap<>();
 
-        List<Stock> stocklist = new ArrayList<>(dd.getStockIdNPrice());
 
-        map.put("stocklist", stocklist);
-        map.put("stockname", stock.getName());
+        // later, we will improve it, which is
+        // dynamically obtaining to-be-queried stocks from user's submitted form.
+        List<Integer> QueriedStocks = new ArrayList<>();
+        //QueriedStocks.addAll();
+
+        QueriedStocks.add(1);
+        QueriedStocks.add(2);
+        QueriedStocks.add(3);
+
+        List<Stock> keyformap = new ArrayList<>();
+        for (int i = 0; i < QueriedStocks.size(); i++) {
+            DailyStockDisplay dd = new DailyStockDisplay();
+            Stock stock = Helper.StockCodes2NamesByFile().get(QueriedStocks.get(i));
+            keyformap.add(stock);
+            dd.setStockCode(String.format("%06d", stock.getId()));
+
+            // obtain current stock's history prices and their corresponding date from web.
+            // each element is of Stock type.
+            List<Stock> stocklist = new ArrayList<>(dd.getStockIdNPrice());
+
+            name2historyprices.put(stock.getName(), stocklist);
+        }
+        map.put("key", keyformap);
+        map.put("stock", name2historyprices);
         return "singlehistorydaily";
 
     }

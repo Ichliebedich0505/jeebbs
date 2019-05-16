@@ -5,16 +5,18 @@
     <title>A stock's history</title>
 </head>
 <body>
-
+<p id="demo"></p>
 <canvas id="myChart"></canvas>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script th:inline="javascript">
 
-    var stocklist = [[${stocklist}]];
+    // stock is like: { "":[{date: "", cur:"" ......}, ......{}] }
+    var stockMap = [[${stock}]];
+    // key is like: [{id: , name: },...,{id: , name: }]
+    var stockkey = [[${key}]];
 
-    var stockname = [[${stockname}]]
-    var stockDate = stocklist.map(getDate);
-    var stockPrice = stocklist.map(getPrice);
+    var stockDate = stockMap[stockkey[0].name].map(getDate);
+    //var stockPrice = stocklist.map(getPrice);
 
     function getDate(value) {
         return value.date;
@@ -24,26 +26,48 @@
         return value.cur;
     }
 
-    function onHover() {
-        print('if you love me, say you love me. then you are mine');
+    function decodeUTF8(text) {
+        return decodeURIComponent(text);
     }
 
+    function createBasic(label, data, backgroundColor, borderColor, borderWidth, fill) {
+        this.label = label;
+        this.data = data;
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
+        this.borderWidth = borderWidth;
+        this.fill = fill;
+    }
+
+
+    // return an array each element of which is an object.
+    function setData(stockMap, stockkey){
+
+        var len = stockMap.size;
+
+
+        var datasets = [];
+
+
+        for (var i = 0; i < stockkey.length; i++){
+            basic = new createBasic(null, null, 'rgba(255, 159, 64, 1)', 'rgba(255, 159, 64, 1)', 1, false);
+            var stockname = stockkey[i].name;
+            //document.getElementById("demo").innerHTML = stockname;
+            basic.label = stockname;
+            basic.data = stockMap[stockname].map(getPrice);
+            datasets.push(basic);
+
+        }
+
+        return datasets;
+    }
 
     var ctx = document.getElementById("myChart").getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
-        data:{
-
+        data: {
             labels: stockDate,
-            datasets: [{
-                label: stockname + '近两个月指数',
-                data: stockPrice,
-                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                borderColor: 'rgba(255, 159, 64, 1)',
-                borderWidth: 1
-
-            }]
-
+            datasets: setData(stockMap, stockkey)
         },
         options: {
             title: {
